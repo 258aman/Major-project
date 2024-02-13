@@ -1,9 +1,11 @@
-from flask import Flask, render_template,redirect,request,flash,session
-from database import User, add_to_db, open_db
+from flask import Flask, render_template,redirect,request, flash, session
+from database import User, add_to_db, File, open_db
+# file upload 
+from werkzeug.utils import secure_filename
+from commonpy.file_utils import readable
 
 app = Flask(__name__)
-app.secret_key = 'thisissupersecretkeyfornone'
-
+app.secret_key = 'thisissupersecretkeyfornoone'
 
 @app.route('/')
 def index():
@@ -17,28 +19,59 @@ def login():
         password = request.form.get('password')
         print("Email =>", email)
         print("Password =>", password)
-
+        # logic
     return render_template('login.html')
 
-@app.route('/register',methods=['GET', 'POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         username = request.form.get('username')
         email = request.form.get('email')
         password = request.form.get('password')
         cpassword = request.form.get('cpassword')
-        print(username,email,password,cpassword)
-        # Logic
-        if len(username)==0 or len(email) == 0 or len(password)==0 or len(cpassword)==0:
-            flash("all fields are required")
-            return redirect('/register')
+        print(username, email, password, cpassword)
+        # logic
+        if len(username) == 0 or len(email) == 0 or len(password) == 0 or len(cpassword) == 0:
+            flash("All fields are required", 'danger')
+            return redirect('/register') # reload the page
         user = User(username=username, email=email, password=password)
-        add_to_db(user) 
-
+        add_to_db(user)
     return render_template('register.html')
 
+@app.route('/comment', methods=['GET', 'POST'])
+def comment():
+    if request.method == 'POST':
+        # Get form data
+        text = request.form.get('text')
+        comment = request.form.get('comment')
+        print(f"Text: {text}")
+        print(f"Comment: {comment}")
+
+    return render_template('comment.html')
+
+@app.route('/file/upload', methods=['GET', 'POST'])
+def file_upload():
+    if request.method == 'POST':
+        file = request.files['file']
+        name = secure_filename(file.filename)
+        path = file_upload(file, name)
+        file = File(path=path, user_id=1)
+        add_to_db(file)
+        flash("File uploaded successfully", 'success')
+    return render_template('upload.html')
+
+@app.route('/file/list', methods=['GET', 'POST'])
+def file_list():
+    db = open_db()
+    files = db.query(File).all()
+    return render_template('display_list.html', files=files)
+
+# 127.0.0.1:8000/file/4/view
+@app.route('/file/<int:id>/view/')
+def file_view(id):
+    # code
+    return render_template('view_file.html')
+
 if __name__ == '__main__':
-  app.run(host='127.0.0.1', port=8000, debug=True)
+    app.run(host='127.0.0.1', port=8000, debug=True)
  
-
-

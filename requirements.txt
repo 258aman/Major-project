@@ -1,2 +1,15 @@
 flask
 sqlalchemy
+pandas
+numpy
+pickle
+sys
+sklearn
+nltk
+string
+re
+vadersentiment
+textstat
+matplotlib
+seaborn
+
