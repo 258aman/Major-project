@@ -1,33 +1,22 @@
-{% extends 'layout/base.html' %}
+<nav class="navbar navbar-expand-light navbar-dark navbar-expand-lg" style="background-color: #d4240d;">
 
-{% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-6 mx-auto">
-            <div class="table-responsive">
-                <table class="table table-light">
-                    <thead>
-                        <tr>
-                            <th scope="col">Id</th>
-                            <th scope="col">Path</th>
-                            <th scope="col">Date</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for file in files %}
-                        <tr>
-                            <td>{{ file.id }}</td>
-                            <td><a href="/file/{{file.id}}/view">{{file.path}}</a></td>
-                            <td>{{ file.created_at }}</td>
-                            <td><a href="/file/{{file.id}}/view">View</a></td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-
+    <div class="container">
+        <a class="navbar-brand" href="/">Speech Detection </a>
+        <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavId"
+            aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation"></button>
+        <div class="collapse navbar-collapse" id="collapsibleNavId">
+            <ul class="navbar-nav mx-auto mt-2 mt-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" fs="4" href="/" aria-current="page">Home<span
+                            class="visually-hidden">(current)</span></a>
+                </li>
+                <li class="nav-item"><a href="/login" class="nav-link fs=4">Login</a></li>
+                <li class="nav-item"><a href="/register" class="nav-link fs=4">Register</a></li>
+            </ul>
+            <form class="d-flex my-2 my-lg-0">
+                <input class="form-control me-sm-2" type="text" placeholder="Search" />
+                <button class="btn bg-light"><i class="fa fa-search"> </i></button>
+            </form>
         </div>
     </div>
-</div>
-{% endblock %}
+</nav>

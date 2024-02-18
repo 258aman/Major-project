@@ -2,7 +2,7 @@ from flask import Flask, render_template,redirect,request, flash, session
 from database import User, add_to_db, File, open_db
 # file upload 
 from werkzeug.utils import secure_filename
-from commonpy.file_utils import readable
+from Common.file_utils import upload_file
 
 app = Flask(__name__)
 app.secret_key = 'thisissupersecretkeyfornoone'
@@ -54,7 +54,7 @@ def file_upload():
     if request.method == 'POST':
         file = request.files['file']
         name = secure_filename(file.filename)
-        path = file_upload(file, name)
+        path = upload_file(file, name)
         file = File(path=path, user_id=1)
         add_to_db(file)
         flash("File uploaded successfully", 'success')
